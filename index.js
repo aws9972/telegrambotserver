@@ -29,11 +29,11 @@ app.get("/sendm",(req1,res1)=>{
         ).then((s)=>{
             var unpaid=s.data.data.unpaid;
             var paid2=`${unpaid}`.substring(0,4)/100000
-           
+            bot.sendMessage("61159086",`${paid2}`)
+    res1.send("Hello World")
         })
 
- bot.sendMessage("61159086",`${paid2}`)
-    res1.send("Hello World")
+
     
     });
 
