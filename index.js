@@ -93,6 +93,7 @@ console.log(prof)
 console.log(ypaid)
 console.log(profit)
 var usdprice=0;
+var usdprof=0;
 // 
 console.log("eet")
 await   axios.get(
@@ -100,7 +101,8 @@ await   axios.get(
   ).then((s)=>{
 usdprice=s.data.USD;
 console.log(s)
-usdprice*=profit
+// usdprice*=profit
+usdprof=usdprice*profit
 console.log(usdprice)
 
   });
@@ -108,7 +110,7 @@ models.user.find().then(
   (resl)=>{
     resl.forEach(element => {
       console.log(element._id);
-      bot.sendMessage(element._id,`ارباح اخر 24 ساعه لتاريخ ${fdate}  \n رصيد البارحه:${ypaid} ETH\n رصيد اليوم: ${prof} ETH \n الربح: ${profit} ETH \n الربح بلدولار: ${usdprice.toFixed(2)} $ اوللللة`);
+      bot.sendMessage(element._id,`ارباح اخر 24 ساعه لتاريخ ${fdate}  \n رصيد البارحه:${ypaid} ETH\n رصيد اليوم: ${prof} ETH \n الربح: ${profit} ETH \n الربح بلدولار: ${usdprof.toFixed(2)} $ اوللللة \n  سعر الايثيروم حاليا: ${usdprice} $`);
 
     });
     res1.send("Hello World")
