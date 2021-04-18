@@ -3,7 +3,8 @@ const Schema=mongoose.Schema;
 
 const userSchem=new Schema(
     {_id:Number,
-        userid:String
+        userid:String,
+        substype:[String]
     },{_id:false}
 )
 

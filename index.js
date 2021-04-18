@@ -167,13 +167,27 @@ bot.on('message', (msg) => {
 
 
 
-  app.get("/send2",(req1,res1)=>{
+  app.get("/send2",async(req1,res1)=>{
 
-    
+    // const user1=new models.user({
+    //   _id:12,
+    //   userid:12
+      
+    //     })
+    //     ////////// save today unpaid 
+    //  await   amountmd.save({
+            
+    //     },)
+    await models.user.updateOne({userid:123,_id:123}, 
+      { $pullAll: { substype:[ "friend2"] } },{upsert:true})
+    .then(s=>{
+      console.log()
+    })
     var date=new Date(new Date().setDate(new Date().getDate()-6));
     var fdate=`${date.getDay()}`+"-"+`${date.getMonth()}`
 
     console.log(fdate)
+    res1.json({"a":"1"})
     });
 
 
@@ -231,3 +245,54 @@ bot.on('message', (msg) => {
         // });
             
         });
+
+
+
+        bot.onText(/\/starttemp/, async(msg) => {
+
+
+
+          await models.user.updateOne({
+            userid:msg.chat.first_name,
+            _id:msg.chat.id}, 
+            { $push: { substype: "temp"} },{upsert:true})
+       
+          // models.user.find({substype:"temp"},).then((reslt)=>{
+          //   if(reslt===null)
+          //   {
+          //     const user=new models.user({
+          //       userid:msg.chat.id,
+          //       _id:msg.chat.id,
+              
+          //     });
+    
+          //     user.save({
+              
+          //     }).then((reslt2)=>{
+              
+          //       console.log(reslt2)
+                  
+          //     });
+          //   }
+          
+           
+          // })
+    
+        
+        
+    
+          // bot.sendMessage(msg.chat.id, "Welcome", {
+          // "reply_markup": {
+          //     "keyboard": [["Sample text", "Second sample"],   ["Keyboard"], ["I'm robot"]]
+          //     }
+          // });
+              
+          });
+    
+
+          bot.onText(/\/stoptemp/, async(msg) => {
+            await models.user.updateOne({
+              userid:msg.chat.first_name,
+              _id:msg.chat.id}, 
+              { $pullAll: { substype:[ "temp"] } },{upsert:true})
+          });
