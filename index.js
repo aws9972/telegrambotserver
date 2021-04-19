@@ -161,7 +161,13 @@ bot.onText(/\/echo (.+)/, (msg, match) => {
 bot.on('message', (msg) => {
     const chatId = msg.chat.id;
   console.log(chatId)
+  console.log(" ,asdsad")
+  if(msg.text==="حرارة")
+  {
+    bot.sendMessage(chatId, 'Received your message2');
+  }
     // send a message to the chat acknowledging receipt of their message
+    else
     bot.sendMessage(chatId, 'Received your message');
   });
 
