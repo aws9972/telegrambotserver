@@ -106,7 +106,7 @@ usdprof=usdprice*profit
 console.log(usdprice)
 
   });
-models.user.find().then(
+models.user.find({substype:"prof"}).then(
   (resl)=>{
     resl.forEach(element => {
       console.log(element._id);
@@ -178,11 +178,23 @@ bot.on('message', (msg) => {
     //  await   amountmd.save({
             
     //     },)
-    await models.user.updateOne({userid:123,_id:123}, 
-      { $pullAll: { substype:[ "friend2"] } },{upsert:true})
-    .then(s=>{
-      console.log()
-    })
+    // await models.user.find({substype:"temp"}, 
+    //  )
+    // .then(s=>{
+    //   console.log(s)
+
+    // })
+    models.user.find({substype:"prof"}).then(
+      (resl)=>{
+        resl.forEach(element => {
+          console.log(element._id);
+          bot.sendMessage(element._id,`test`);
+    
+        });
+        res1.send("Hello World")
+    
+      }
+    )
     var date=new Date(new Date().setDate(new Date().getDate()-6));
     var fdate=`${date.getDay()}`+"-"+`${date.getMonth()}`
 
@@ -296,3 +308,61 @@ bot.on('message', (msg) => {
               _id:msg.chat.id}, 
               { $pullAll: { substype:[ "temp"] } },{upsert:true})
           });
+
+
+          bot.onText(/\/startprofit/, async(msg) => {
+
+
+
+            await models.user.updateOne({
+              userid:msg.chat.first_name,
+              _id:msg.chat.id}, 
+              { $push: { substype: "prof"} },{upsert:true})
+         
+     
+                
+            });
+
+
+            bot.onText(/\/stopprofit/, async(msg) => {
+              await models.user.updateOne({
+                userid:msg.chat.first_name,
+                _id:msg.chat.id}, 
+                { $pullAll: { substype:[ "prof"] } },{upsert:true})
+            });
+
+
+
+            app.get("/checktemp",async(req1,res1)=>{
+
+              await   axios.get(
+                'https://api.minerstat.com/v2/stats/lx3233zvbf9s/WORKER001'
+                ).then((s)=>{
+                  
+var os=s.data.WORKER001.info.os;
+var gpus=s.data.WORKER001.hardware;
+for (let i = 0; i < gpus.length; i++) {
+  const element = gpus[i];
+  if(element.temp>=60||element.fan>61)
+  {
+    models.user.find({substype:"temp"}).then(
+      (resl)=>{
+        resl.forEach(element2 => {
+          console.log(element2._id);
+          bot.sendMessage(element2._id,`يرجى فحص النظام \n ${element.name} - \n Temp: ${element.temp} \n Fan: ${element.fan}% \n Power: ${element.power} watt`);
+    
+        });
+      
+    
+      }
+    )
+    
+  }
+}
+console.log("end")
+res1.status(200)
+res1.json({})
+
+                })
+
+            })
