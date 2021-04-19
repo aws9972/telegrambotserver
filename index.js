@@ -175,7 +175,7 @@ const element = gpus[i];
 
 
 
-bot.sendMessage(chatId._id,` <b>\n ${element.name} </b> - \n Temp: ${element.temp} C \n Fan: ${element.fan}% \n Power: ${element.power} watt  \n speed: ${element.speed} `);
+bot.sendMessage(chatId,` <b>\n ${element.name} </b> - \n Temp: ${element.temp} C \n Fan: ${element.fan}% \n Power: ${element.power} watt  \n speed: ${element.speed} `);
 
 }
 console.log("end")
