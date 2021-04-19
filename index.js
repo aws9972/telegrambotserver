@@ -158,13 +158,32 @@ bot.onText(/\/echo (.+)/, (msg, match) => {
 
     // Listen for any kind of message. There are different kinds of
 // messages.
-bot.on('message', (msg) => {
+bot.on('message',async (msg) => {
     const chatId = msg.chat.id;
   console.log(chatId)
   console.log(" ,asdsad")
   if(msg.text==="حرارة")
   {
-    bot.sendMessage(chatId, 'Received your message2');
+    await   axios.get(
+      'https://api.minerstat.com/v2/stats/lx3233zvbf9s/WORKER001'
+      ).then((s)=>{
+        
+var os=s.data.WORKER001.info.os;
+var gpus=s.data.WORKER001.hardware;
+for (let i = 0; i < gpus.length; i++) {
+const element = gpus[i];
+
+
+console.log(element2._id);
+bot.sendMessage(element2._id,` <b>\n ${element.name} </b> - \n Temp: ${element.temp} C \n Fan: ${element.fan}% \n Power: ${element.power} watt  \n speed: ${element.speed} `);
+
+}
+console.log("end")
+res1.status(200)
+res1.json({})
+
+      })
+    // bot.sendMessage(chatId, 'Received your message2');
   }
     // send a message to the chat acknowledging receipt of their message
     else
