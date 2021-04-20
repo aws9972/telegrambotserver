@@ -48,7 +48,7 @@ var fdate=`${date.getDate()}`+"-"+`${date.getMonth()+1}`
 
 
 var ydate=new Date(new Date().setDate(new Date().getDate()-1));
-var fydate=`${ydate.getDate()}`+"-"+`${date.getMonth()+1}`
+var fydate=`${ydate.getDate()}`+"-"+`${ydate.getMonth()+1}`
 
 /////////// get unpaid amount 
     axios.get(
@@ -110,7 +110,7 @@ models.user.find({substype:"prof"}).then(
   (resl)=>{
     resl.forEach(element => {
       console.log(element._id);
-      bot.sendMessage(element._id,`ارباح اخر 24 ساعه لتاريخ ${fdate}  \n رصيد البارحه:${ypaid} ETH\n رصيد اليوم: ${prof} ETH \n الربح: ${profit} ETH \n الربح بلدولار: ${usdprof.toFixed(2)} $ اوللللة \n  سعر الايثيروم حاليا: ${usdprice} $`);
+      bot.sendMessage(element._id,`ارباح اخر 24 ساعه لتاريخ ${fdate}  \n رصيد البارحه:${ypaid} ETH\n رصيد اليوم: ${prof} ETH \n الربح: ${profit} ETH \n الربح بلدولار: ${usdprof.toFixed(2)} $  \n  سعر الايثيروم حاليا: ${usdprice} $`);
 
     });
     res1.send("Hello World")
@@ -180,21 +180,68 @@ bot.sendMessage(chatId,` <b>${element.name}</b> - \n Temp: ${element.temp} C \n 
 
 }
 console.log("end")
-res1.status(200)
-res1.json({})
+
 
       })
     // bot.sendMessage(chatId, 'Received your message2');
-  }
-    // send a message to the chat acknowledging receipt of their message
-    else
-    bot.sendMessage(chatId, 'Received your message');
-  });
+  }else if(msg.text==="2")
+  {
+    var ydate=new Date(new Date().setDate(new Date().getDate()-1));
+    var fydate=`${ydate.getDate()}`+"-"+`${ydate.getMonth()+1}`
+    
+    axios.get(
+      'https://api.ethermine.org/miner/0x103836D8BA826c49C1B41b8b4bdED96dd26066C4/currentStats'
+      ).then(async(s)=>{
+
+          var unpaid=s.data.data.unpaid;
+
+           unpaid=`${unpaid}`.substring(0,4)/100000
+
+          models.amount.findById(fydate).then(async (yres)=>{
+            if(yres===null)
+            {
+
+            
+              // res1.send("Hello World")
+
+            }else
+            {
+ypaid=yres.amount;
+var profit=(unpaid-ypaid).toString().substring(0,7);
+
+var usdprice=0;
+var usdprof=0;
+// 
+console.log("eet")
+await   axios.get(
+'https://min-api.cryptocompare.com/data/price?fsym=eth&tsyms=USD&api_key=8745ca04378cad9a34575db425ccdb9ef70e8c6be6e3e13749312453611233c3'
+).then((s)=>{
+usdprice=s.data.USD;
+console.log(s)
+// usdprice*=profit
+usdprof=usdprice*profit
+console.log(usdprice)
+
+});
 
 
 
-  app.get("/send2",async(req1,res1)=>{
+bot.sendMessage(61159086,`الارباح من البارحه لحد الان \n رصيد البارحه:${ypaid} ETH\n  الرصيد الحالي: ${unpaid} ETH \n الربح: ${profit} ETH \n الربح بلدولار: ${usdprof.toFixed(2)} $  \n  سعر الايثيروم حاليا: ${usdprice} $`);
 
+
+
+// {"_id":{"$numberInt":"61159086"},"userid":"AB","__v":{"$numberInt":"0"},"substype":["prof","prof"]}
+
+// res1.send("Hello World")
+
+
+            }
+          })
+
+
+        
+        });
+    
     // const user1=new models.user({
     //   _id:12,
     //   userid:12
@@ -210,22 +257,23 @@ res1.json({})
     //   console.log(s)
 
     // })
-    models.user.find({substype:"prof"}).then(
-      (resl)=>{
-        resl.forEach(element => {
-          console.log(element._id);
-          bot.sendMessage(element._id,`test`);
-    
-        });
-        res1.send("Hello World")
-    
-      }
-    )
-    var date=new Date(new Date().setDate(new Date().getDate()-6));
-    var fdate=`${date.getDay()}`+"-"+`${date.getMonth()}`
+
+    var date=new Date(new Date().setDate(new Date().getDate()-1));
+    var fdate=`${date.getDay()}`+"-"+`${date.getMonth()+1}`
 
     console.log(fdate)
-    res1.json({"a":"1"})
+    // res1.json({"a":"1"})
+  }
+    // send a message to the chat acknowledging receipt of their message
+    else
+    bot.sendMessage(chatId, 'Received your message');
+  });
+
+
+
+  app.get("/send2",async(req1,res1)=>{
+
+   
     });
 
 
