@@ -56,8 +56,8 @@ var fydate=`${ydate.getDate()}`+"-"+`${ydate.getMonth()+1}`
         ).then(async(s)=>{
 
             var unpaid=s.data.data.unpaid;
-            // var paid2=`${unpaid}`.substring(0,4)/100000
-            var paid2=`0.00${unpaid.toString().substr(0,4)}`
+            var paid2=`${unpaid}`.substring(0,4)/100000
+            // var paid2=`0.00${unpaid.toString().substr(0,4)}`
 var prof=paid2;
             const amountmd=new models.amount({
               _id:fdate,
