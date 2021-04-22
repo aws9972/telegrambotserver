@@ -56,7 +56,8 @@ var fydate=`${ydate.getDate()}`+"-"+`${ydate.getMonth()+1}`
         ).then(async(s)=>{
 
             var unpaid=s.data.data.unpaid;
-            var paid2=`${unpaid}`.substring(0,4)/100000
+            // var paid2=`${unpaid}`.substring(0,4)/100000
+            var paid2=`0.00${unpaid.toString().substr(0,4)}`
 var prof=paid2;
             const amountmd=new models.amount({
               _id:fdate,
@@ -272,7 +273,8 @@ bot.sendMessage(61159086,`الارباح من البارحه لحد الان \n 
 
 
   app.get("/send2",async(req1,res1)=>{
-
+var x=9797438710129722;
+console.log(`0.00${x.toString().substr(0,5)}`-0.001);
    
     });
 
